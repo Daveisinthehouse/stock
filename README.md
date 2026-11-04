@@ -8,9 +8,9 @@ Open `index.html` locally, or enable GitHub Pages for this repository and visit 
 
 Choose Sean, Niamh, or Emma, then start the 60-second shift. The computer displays a customer from the supplied customer export and says **PLACE TONER**. Press **Place order** to process as many orders as you can.
 
-- Sean and Niamh see a green tick with **ORDER PLACED** and earn one point per order.
-- Emma sees a red X with **WRONG ORDER** and earns no points.
-- The game shows the final score when the timer ends.
+- Sean and Niamh see a green tick with **ORDER PLACED** and increase the **ORDERS PLACED** count for each successful order.
+- Emma sees a red X with **WRONG ORDER** and does not increase the count.
+- The game shows the total orders placed when the timer ends.
 
 ## Files
 
