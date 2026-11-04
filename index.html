@@ -58,13 +58,13 @@ h1{margin:0;font-size:clamp(20px,4vw,48px);color:var(--mint);letter-spacing:.13e
 <section class="screen" aria-live="polite"><div class="app">
 <div class="topline"><span class="brand">STOCK // ORDER TERMINAL</span><span id="clock-label">READY</span></div>
 <div id="start-view" class="content">
-<h1>STOCK</h1><p class="subtitle">TONER ORDER SHIFT</p><p class="help">CHOOSE PLAYER</p>
+<h1>STOCK</h1><p class="subtitle">TONER ORDER SHIFT</p><p class="help">LOG IN AS</p>
 <div class="players" role="group" aria-label="Choose player">
 <button class="player" data-player="Sean" aria-label="Choose Sean"><img src="./sean.png" alt=""><b>SEAN</b></button>
 <button class="player" data-player="Niamh" aria-label="Choose Niamh"><img src="./niamh.png" alt=""><b>NIAMH</b></button>
 <button class="player" data-player="Emma" aria-label="Choose Emma"><img src="./emma.png" alt=""><b>EMMA</b></button>
 </div>
-<button id="choose-button" class="button" type="button" disabled>Choose player</button>
+<button id="choose-button" class="button" type="button" disabled>Log in as</button>
 <p class="help">60 SECONDS • PLACE AS MANY TONER ORDERS AS YOU CAN</p>
 </div>
 <div id="game-view" class="content hidden">
@@ -82,7 +82,7 @@ h1{margin:0;font-size:clamp(20px,4vw,48px);color:var(--mint);letter-spacing:.13e
 <h1>TIME!</h1><p class="subtitle">SHIFT COMPLETE</p>
 <div class="order-box"><div class="order-label">FINAL SCORE</div><div id="final-score" class="order">0 POINTS</div></div>
 <p id="end-message" class="help"></p>
-<button id="play-again" class="button" type="button">Choose player</button>
+<button id="play-again" class="button" type="button">Log in as another player</button>
 </div>
 </div></section>
 </main>
@@ -101,11 +101,13 @@ players.forEach(button=>button.addEventListener("click",()=>{
  players.forEach(item=>item.classList.remove("selected"));
  button.classList.add("selected");
  selected=button.dataset.player;
+ chooseButton.textContent="Log in as "+selected;
  chooseButton.disabled=false;
 }));
 chooseButton.addEventListener("click",startGame);
 document.querySelector("#play-again").addEventListener("click",()=>{
  endView.classList.add("hidden");gameView.classList.add("hidden");startView.classList.remove("hidden");
+ selected=null;players.forEach(item=>item.classList.remove("selected"));chooseButton.disabled=true;chooseButton.textContent="Log in as";
  clockLabel.textContent="READY";
 });
 function nextCustomer(){
