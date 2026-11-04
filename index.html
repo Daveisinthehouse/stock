@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#171923">
+<title>Stock — Office Orders</title>
+<style>
+  :root { color-scheme: dark; --mint:#a9f4c7; --ink:#11151d; --panel:#1b2330; --cream:#fff1d3; --red:#ff725e; }
+  * { box-sizing:border-box }
+  body { margin:0; min-height:100vh; display:grid; place-items:center; padding:18px; background:radial-gradient(ellipse at 50% 30%,#34414a,#171923 72%); color:var(--cream); font-family:ui-monospace,SFMono-Regular,Menlo,monospace }
+  .cabinet { width:min(1100px,100%); position:relative; line-height:0 }
+  .cabinet-art { display:block; width:100%; height:auto; image-rendering:pixelated; }
+  .screen { position:absolute; left:24.55%; top:10.55%; width:54.9%; height:53.85%; overflow:hidden; border-radius:1.4%; line-height:normal; background:#111923; color:var(--cream); box-shadow:inset 0 0 28px #0009; }
+  .screen::after { content:""; position:absolute; inset:0; pointer-events:none; opacity:.17; background:repeating-linear-gradient(0deg,transparent 0 3px,#000 4px); mix-blend-mode:multiply }
+  .app { height:100%; display:flex; flex-direction:column; padding:clamp(8px,1.3vw,16px); position:relative; z-index:1; }
+  .topline { display:flex; justify-content:space-between; align-items:center; padding-bottom:7px; border-bottom:1px solid #78809166; color:#b9c7cf; font-size:clamp(8px,1vw,12px); letter-spacing:.12em; text-transform:uppercase }
+  .brand { color:var(--mint); font-weight:900 }
+  .content { flex:1; min-height:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:clamp(4px,1vh,12px); text-align:center; overflow:hidden }
+  h1 { margin:0; font-size:clamp(20px,4vw,48px); color:var(--mint); letter-spacing:.13em; text-shadow:2px 3px #39785b }
+  .subtitle { margin:0; font-size:clamp(8px,1.25vw,14px); color:#d9d6c8 }
+  .players { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:clamp(5px,1.1vw,13px); width:min(100%,650px); }
+  .player { border:1px solid #788091; background:#18202c; color:var(--cream); padding:5px; min-width:0; cursor:pointer; font:inherit; transition:transform .12s,border-color .12s,background .12s; }
+  .player:hover,.player:focus-visible { transform:translateY(-2px); border-color:var(--mint); outline:none; background:#253346 }
+  .player img { width:100%; height:clamp(40px,9vh,90px); object-fit:contain; display:block; image-rendering:pixelated; }
+  .player b { display:block; margin-top:2px; font-size:clamp(8px,1.15vw,13px); letter-spacing:.1em }
+  .button { border:0; padding:clamp(7px,1vh,12px) clamp(14px,2vw,24px); background:var(--mint); color:#12241d; font:900 clamp(10px,1.3vw,15px) ui-monospace,monospace; letter-spacing:.1em; text-transform:uppercase; cursor:pointer; box-shadow:0 4px #518d6b }
+  .button:hover { filter:brightness(1.08); transform:translateY(-1px) }
+  .button:active { transform:translateY(2px); box-shadow:0 1px #518d6b }
+  .help { font-size:clamp(7px,.95vw,11px); color:#bdc3c3; margin:0 }
+  .game-head { display:flex; width:100%; justify-content:space-between; align-items:center; gap:8px; font-size:clamp(9px,1.2vw,14px) }
+  .stat { color:var(--mint); font-weight:bold }
+  .avatar-small { height:clamp(28px,6vh,56px); width:clamp(28px,6vh,56px); object-fit:contain; image-rendering:pixelated }
+  .order-box { border:1px solid #a9f4c766; background:#101720; padding:clamp(6px,1.2vh,13px); width:100%; max-width:560px }
+  .order-label { color:#9aa9b8; font-size:clamp(7px,.95vw,11px); text-transform:uppercase; letter-spacing:.15em }
+  .order { font-size:clamp(13px,2.5vw,28px); color:#fff; font-weight:900; margin-top:4px }
+  .feedback { min-height:1.2em; font-size:clamp(10px,1.7vw,19px); font-weight:900; color:var(--mint) }
+  .feedback.wrong { color:var(--red) }
+  .order-button { width:min(100%,380px); }
+  .footer { color:#aeb7bf; font-size:clamp(7px,.9vw,10px); }
+  .hidden { display:none!important }
+  @media(max-width:600px) { body{padding:8px}.screen{left:24.55%;top:10.55%;width:54.9%;height:53.85%}.app{padding:5px}.topline{padding-bottom:3px}.player{padding:2px}.player img{height:38px} }
+</style>
+</head>
+<body>
+<main class="cabinet" aria-label="Stock retro computer game">
+  <img class="cabinet-art" src="./desktop.png" alt="Pixel-art retro computer on a desk with three yellow ducks">
+  <section class="screen" aria-live="polite">
+    <div class="app">
+      <div class="topline"><span class="brand">STOCK // OFFICE SIM</span><span id="clock-label">READY</span></div>
+      <div id="start-view" class="content">
+        <h1>STOCK</h1>
+        <p class="subtitle">THE ORDER DESK IS OPEN</p>
+        <p class="help">CHOOSE PLAYER</p>
+        <div class="players" role="group" aria-label="Choose player">
+          <button class="player" data-player="Sean" aria-label="Choose Sean"><img src="./sean.png" alt=""><b>SEAN</b></button>
+          <button class="player" data-player="Niamh" aria-label="Choose Niamh"><img src="./niamh.png" alt=""><b>NIAMH</b></button>
+          <button class="player" data-player="Emma" aria-label="Choose Emma"><img src="./emma.png" alt=""><b>EMMA</b></button>
+        </div>
+        <button id="choose-button" class="button" type="button">Choose player</button>
+        <p class="help">60 SECONDS • PLACE AS MANY ORDERS AS YOU CAN</p>
+      </div>
+      <div id="game-view" class="content hidden">
+        <div class="game-head">
+          <span><img id="active-avatar" class="avatar-small" alt=""><span id="active-name"></span></span>
+          <span>POINTS <b id="score" class="stat">0</b></span>
+          <span>TIME <b id="timer" class="stat">60</b></span>
+        </div>
+        <div class="order-box"><div class="order-label">COMPUTER SAYS • PLACE ORDER</div><div id="order-text" class="order">TONER CARTRIDGE</div></div>
+        <div id="feedback" class="feedback" role="status">READY?</div>
+        <button id="place-order" class="button order-button" type="button">Place order</button>
+        <p id="round-hint" class="footer">Correct order = 1 point</p>
+      </div>
+      <div id="end-view" class="content hidden">
+        <h1>TIME!</h1>
+        <p class="subtitle">SHIFT COMPLETE</p>
+        <div class="order-box"><div class="order-label">FINAL SCORE</div><div id="final-score" class="order">0 POINTS</div></div>
+        <p id="end-message" class="help"></p>
+        <button id="play-again" class="button" type="button">Choose player</button>
+      </div>
+    </div>
+  </section>
+</main>
+<script>
+(() => {
+  const players = [...document.querySelectorAll(".player")];
+  const startView = document.querySelector("#start-view");
+  const gameView = document.querySelector("#game-view");
+  const endView = document.querySelector("#end-view");
+  const chooseButton = document.querySelector("#choose-button");
+  const placeButton = document.querySelector("#place-order");
+  const selectedStyle = document.createElement("style");
+  selectedStyle.textContent = ".player.selected{border:2px solid #a9f4c7;background:#253346}";
+  document.head.append(selectedStyle);
+  let selected = null, score = 0, seconds = 60, interval = null, locked = false;
+  const orders = ["TONER CARTRIDGE", "PAPER REAM", "INK BOTTLE", "LABEL ROLL", "USB CABLE", "STAPLER"];
+  let orderIndex = 0;
+  const clockLabel = document.querySelector("#clock-label");
+  players.forEach(button => button.addEventListener("click", () => {
+    players.forEach(item => item.classList.remove("selected"));
+    button.classList.add("selected");
+    selected = button.dataset.player;
+    chooseButton.disabled = false;
+  }));
+  chooseButton.disabled = true;
+  chooseButton.addEventListener("click", startGame);
+  document.querySelector("#play-again").addEventListener("click", () => {
+    endView.classList.add("hidden"); gameView.classList.add("hidden"); startView.classList.remove("hidden");
+    clockLabel.textContent = "READY";
+  });
+  function startGame() {
+    if (!selected) return;
+    score = 0; seconds = 60; orderIndex = 0; locked = false;
+    document.querySelector("#score").textContent = score;
+    document.querySelector("#timer").textContent = seconds;
+    document.querySelector("#active-name").textContent = selected.toUpperCase();
+    document.querySelector("#active-avatar").src = "./" + selected.toLowerCase() + ".png";
+    document.querySelector("#feedback").textContent = "READY?";
+    document.querySelector("#feedback").classList.remove("wrong");
+    document.querySelector("#round-hint").textContent = selected === "Emma" ? "Emma's orders are mixed up!" : "Correct order = 1 point";
+    startView.classList.add("hidden"); endView.classList.add("hidden"); gameView.classList.remove("hidden");
+    clockLabel.textContent = "ON SHIFT";
+    nextOrder();
+    clearInterval(interval);
+    interval = setInterval(() => {
+      seconds--;
+      document.querySelector("#timer").textContent = seconds;
+      if (seconds <= 0) finishGame();
+    }, 1000);
+  }
+  function nextOrder() {
+    document.querySelector("#order-text").textContent = orders[orderIndex % orders.length];
+    orderIndex++;
+  }
+  placeButton.addEventListener("click", () => {
+    if (locked || seconds <= 0) return;
+    const feedback = document.querySelector("#feedback");
+    locked = true;
+    if (selected === "Emma") {
+      feedback.textContent = "WRONG ORDER!";
+      feedback.classList.add("wrong");
+    } else {
+      score++;
+      document.querySelector("#score").textContent = score;
+      feedback.textContent = "ORDER PLACED!";
+      feedback.classList.remove("wrong");
+    }
+    placeButton.disabled = true;
+    setTimeout(() => {
+      if (seconds <= 0) return;
+      nextOrder();
+      feedback.textContent = "READY?";
+      feedback.classList.remove("wrong");
+      locked = false;
+      placeButton.disabled = false;
+    }, 550);
+  });
+  function finishGame() {
+    clearInterval(interval); interval = null;
+    seconds = 0; locked = true; placeButton.disabled = true;
+    gameView.classList.add("hidden"); endView.classList.remove("hidden");
+    clockLabel.textContent = "SHIFT ENDED";
+    document.querySelector("#final-score").textContent = score + (score === 1 ? " POINT" : " POINTS");
+    document.querySelector("#end-message").textContent = selected === "Emma" ? "Emma placed every order wrong. No points this shift!" : "Nice work. Ready for another shift?";
+  }
+})();
+</script>
+</body>
+</html>
