@@ -4,165 +4,168 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#171923">
-<title>Stock — Office Orders</title>
+<title>Stock — Toner Orders</title>
 <style>
-  :root { color-scheme: dark; --mint:#a9f4c7; --ink:#11151d; --panel:#1b2330; --cream:#fff1d3; --red:#ff725e; }
-  * { box-sizing:border-box }
-  body { margin:0; min-height:100vh; display:grid; place-items:center; padding:18px; background:radial-gradient(ellipse at 50% 30%,#34414a,#171923 72%); color:var(--cream); font-family:ui-monospace,SFMono-Regular,Menlo,monospace }
-  .cabinet { width:min(1100px,100%); position:relative; line-height:0 }
-  .cabinet-art { display:block; width:100%; height:auto; image-rendering:pixelated; }
-  .screen { position:absolute; left:24.55%; top:10.55%; width:54.9%; height:53.85%; overflow:hidden; border-radius:1.4%; line-height:normal; background:#111923; color:var(--cream); box-shadow:inset 0 0 28px #0009; }
-  .screen::after { content:""; position:absolute; inset:0; pointer-events:none; opacity:.17; background:repeating-linear-gradient(0deg,transparent 0 3px,#000 4px); mix-blend-mode:multiply }
-  .app { height:100%; display:flex; flex-direction:column; padding:clamp(8px,1.3vw,16px); position:relative; z-index:1; }
-  .topline { display:flex; justify-content:space-between; align-items:center; padding-bottom:7px; border-bottom:1px solid #78809166; color:#b9c7cf; font-size:clamp(8px,1vw,12px); letter-spacing:.12em; text-transform:uppercase }
-  .brand { color:var(--mint); font-weight:900 }
-  .content { flex:1; min-height:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:clamp(4px,1vh,12px); text-align:center; overflow:hidden }
-  h1 { margin:0; font-size:clamp(20px,4vw,48px); color:var(--mint); letter-spacing:.13em; text-shadow:2px 3px #39785b }
-  .subtitle { margin:0; font-size:clamp(8px,1.25vw,14px); color:#d9d6c8 }
-  .players { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:clamp(5px,1.1vw,13px); width:min(100%,650px); }
-  .player { border:1px solid #788091; background:#18202c; color:var(--cream); padding:5px; min-width:0; cursor:pointer; font:inherit; transition:transform .12s,border-color .12s,background .12s; }
-  .player:hover,.player:focus-visible { transform:translateY(-2px); border-color:var(--mint); outline:none; background:#253346 }
-  .player img { width:100%; height:clamp(40px,9vh,90px); object-fit:contain; display:block; image-rendering:pixelated; }
-  .player b { display:block; margin-top:2px; font-size:clamp(8px,1.15vw,13px); letter-spacing:.1em }
-  .button { border:0; padding:clamp(7px,1vh,12px) clamp(14px,2vw,24px); background:var(--mint); color:#12241d; font:900 clamp(10px,1.3vw,15px) ui-monospace,monospace; letter-spacing:.1em; text-transform:uppercase; cursor:pointer; box-shadow:0 4px #518d6b }
-  .button:hover { filter:brightness(1.08); transform:translateY(-1px) }
-  .button:active { transform:translateY(2px); box-shadow:0 1px #518d6b }
-  .help { font-size:clamp(7px,.95vw,11px); color:#bdc3c3; margin:0 }
-  .game-head { display:flex; width:100%; justify-content:space-between; align-items:center; gap:8px; font-size:clamp(9px,1.2vw,14px) }
-  .stat { color:var(--mint); font-weight:bold }
-  .avatar-small { height:clamp(28px,6vh,56px); width:clamp(28px,6vh,56px); object-fit:contain; image-rendering:pixelated }
-  .order-box { border:1px solid #a9f4c766; background:#101720; padding:clamp(6px,1.2vh,13px); width:100%; max-width:560px }
-  .order-label { color:#9aa9b8; font-size:clamp(7px,.95vw,11px); text-transform:uppercase; letter-spacing:.15em }
-  .order { font-size:clamp(13px,2.5vw,28px); color:#fff; font-weight:900; margin-top:4px }
-  .feedback { min-height:1.2em; font-size:clamp(10px,1.7vw,19px); font-weight:900; color:var(--mint) }
-  .feedback.wrong { color:var(--red) }
-  .order-button { width:min(100%,380px); }
-  .footer { color:#aeb7bf; font-size:clamp(7px,.9vw,10px); }
-  .hidden { display:none!important }
-  @media(max-width:600px) { body{padding:8px}.screen{left:24.55%;top:10.55%;width:54.9%;height:53.85%}.app{padding:5px}.topline{padding-bottom:3px}.player{padding:2px}.player img{height:38px} }
+:root{color-scheme:dark;--mint:#a9f4c7;--cream:#fff1d3;--red:#ff524f;--ink:#111923}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:grid;place-items:center;padding:18px;background:radial-gradient(ellipse at 50% 30%,#34414a,#171923 72%);color:var(--cream);font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.cabinet{width:min(1100px,100%);position:relative;line-height:0}
+.cabinet-art{display:block;width:100%;height:auto;image-rendering:pixelated}
+.screen{position:absolute;left:24.55%;top:10.55%;width:54.9%;height:53.85%;overflow:hidden;border-radius:1.4%;line-height:normal;background:#111923;color:var(--cream);box-shadow:inset 0 0 28px #0009}
+.screen:after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.13;background:repeating-linear-gradient(0deg,transparent 0 3px,#000 4px);mix-blend-mode:multiply}
+.app{height:100%;display:flex;flex-direction:column;padding:clamp(8px,1.3vw,16px);position:relative;z-index:1}
+.topline{display:flex;justify-content:space-between;align-items:center;padding-bottom:7px;border-bottom:1px solid #78809166;color:#b9c7cf;font-size:clamp(8px,1vw,12px);letter-spacing:.12em;text-transform:uppercase}
+.brand{color:var(--mint);font-weight:900}
+.content{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(4px,1vh,12px);text-align:center;overflow:hidden}
+h1{margin:0;font-size:clamp(20px,4vw,48px);color:var(--mint);letter-spacing:.13em;text-shadow:2px 3px #39785b}
+.subtitle{margin:0;font-size:clamp(8px,1.25vw,14px);color:#d9d6c8}
+.players{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(5px,1.1vw,13px);width:min(100%,650px)}
+.player{border:1px solid #788091;background:#18202c;color:var(--cream);padding:5px;min-width:0;cursor:pointer;font:inherit;transition:transform .12s,border-color .12s,background .12s}
+.player:hover,.player:focus-visible,.player.selected{transform:translateY(-2px);border-color:var(--mint);outline:none;background:#253346}
+.player.selected{border-width:2px}
+.player img{width:100%;height:clamp(40px,9vh,90px);object-fit:contain;display:block;image-rendering:pixelated}
+.player b{display:block;margin-top:2px;font-size:clamp(8px,1.15vw,13px);letter-spacing:.1em}
+.button{border:0;padding:clamp(7px,1vh,12px) clamp(14px,2vw,24px);background:var(--mint);color:#12241d;font:900 clamp(10px,1.3vw,15px) ui-monospace,monospace;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;box-shadow:0 4px #518d6b}
+.button:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.button:active{transform:translateY(2px);box-shadow:0 1px #518d6b}
+.button:disabled{opacity:.55;cursor:default;transform:none}
+.help{font-size:clamp(7px,.95vw,11px);color:#bdc3c3;margin:0}
+.game-head{display:flex;width:100%;justify-content:space-between;align-items:center;gap:8px;font-size:clamp(8px,1.15vw,13px)}
+.active-player{display:flex;align-items:center;gap:4px}
+.stat{color:var(--mint);font-weight:bold}
+.avatar-small{height:clamp(25px,5.2vh,48px);width:clamp(25px,5.2vh,48px);object-fit:contain;image-rendering:pixelated}
+.customer-box{border:1px solid #a9f4c766;background:#101720;padding:clamp(5px,1vh,10px);width:100%;max-width:560px}
+.customer-label{color:#9aa9b8;font-size:clamp(7px,.9vw,10px);text-transform:uppercase;letter-spacing:.15em}
+.customer-name{font-size:clamp(9px,1.4vw,16px);color:#fff;font-weight:800;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.place-toner{font-size:clamp(17px,3vw,34px);color:var(--mint);font-weight:1000;letter-spacing:.1em;text-shadow:2px 2px #39785b}
+.outcome{min-height:clamp(36px,7vh,66px);display:flex;align-items:center;justify-content:center;gap:clamp(6px,1.2vw,14px);font-weight:1000;color:var(--mint)}
+.outcome-icon{font-size:clamp(29px,5.5vw,62px);line-height:1}
+.outcome-text{font-size:clamp(12px,2.1vw,24px);letter-spacing:.04em}
+.outcome.wrong{color:var(--red);text-shadow:2px 2px #672b30}
+.outcome.idle{color:#bdc3c3}
+.order-button{width:min(100%,380px)}
+.footer{color:#aeb7bf;font-size:clamp(7px,.9vw,10px);margin:0}
+.order-box{border:1px solid #a9f4c766;background:#101720;padding:clamp(6px,1.2vh,13px);width:100%;max-width:560px}
+.order-label{color:#9aa9b8;font-size:clamp(7px,.95vw,11px);text-transform:uppercase;letter-spacing:.15em}
+.order{font-size:clamp(13px,2.5vw,28px);color:#fff;font-weight:900;margin-top:4px}
+.hidden{display:none!important}
+@media(max-width:600px){body{padding:8px}.screen{left:24.55%;top:10.55%;width:54.9%;height:53.85%}.app{padding:5px}.topline{padding-bottom:3px}.player{padding:2px}.player img{height:38px}}
 </style>
 </head>
 <body>
-<main class="cabinet" aria-label="Stock retro computer game">
-  <img class="cabinet-art" src="./desktop.png" alt="Pixel-art retro computer on a desk with three yellow ducks">
-  <section class="screen" aria-live="polite">
-    <div class="app">
-      <div class="topline"><span class="brand">STOCK // OFFICE SIM</span><span id="clock-label">READY</span></div>
-      <div id="start-view" class="content">
-        <h1>STOCK</h1>
-        <p class="subtitle">THE ORDER DESK IS OPEN</p>
-        <p class="help">CHOOSE PLAYER</p>
-        <div class="players" role="group" aria-label="Choose player">
-          <button class="player" data-player="Sean" aria-label="Choose Sean"><img src="./sean.png" alt=""><b>SEAN</b></button>
-          <button class="player" data-player="Niamh" aria-label="Choose Niamh"><img src="./niamh.png" alt=""><b>NIAMH</b></button>
-          <button class="player" data-player="Emma" aria-label="Choose Emma"><img src="./emma.png" alt=""><b>EMMA</b></button>
-        </div>
-        <button id="choose-button" class="button" type="button">Choose player</button>
-        <p class="help">60 SECONDS • PLACE AS MANY ORDERS AS YOU CAN</p>
-      </div>
-      <div id="game-view" class="content hidden">
-        <div class="game-head">
-          <span><img id="active-avatar" class="avatar-small" alt=""><span id="active-name"></span></span>
-          <span>POINTS <b id="score" class="stat">0</b></span>
-          <span>TIME <b id="timer" class="stat">60</b></span>
-        </div>
-        <div class="order-box"><div class="order-label">COMPUTER SAYS • PLACE ORDER</div><div id="order-text" class="order">TONER CARTRIDGE</div></div>
-        <div id="feedback" class="feedback" role="status">READY?</div>
-        <button id="place-order" class="button order-button" type="button">Place order</button>
-        <p id="round-hint" class="footer">Correct order = 1 point</p>
-      </div>
-      <div id="end-view" class="content hidden">
-        <h1>TIME!</h1>
-        <p class="subtitle">SHIFT COMPLETE</p>
-        <div class="order-box"><div class="order-label">FINAL SCORE</div><div id="final-score" class="order">0 POINTS</div></div>
-        <p id="end-message" class="help"></p>
-        <button id="play-again" class="button" type="button">Choose player</button>
-      </div>
-    </div>
-  </section>
+<main class="cabinet" aria-label="Stock toner order game">
+<img class="cabinet-art" src="./desktop.png" alt="Pixel-art computer on a desk with three mini ducks">
+<section class="screen" aria-live="polite"><div class="app">
+<div class="topline"><span class="brand">STOCK // ORDER TERMINAL</span><span id="clock-label">READY</span></div>
+<div id="start-view" class="content">
+<h1>STOCK</h1><p class="subtitle">TONER ORDER SHIFT</p><p class="help">CHOOSE PLAYER</p>
+<div class="players" role="group" aria-label="Choose player">
+<button class="player" data-player="Sean" aria-label="Choose Sean"><img src="./sean.png" alt=""><b>SEAN</b></button>
+<button class="player" data-player="Niamh" aria-label="Choose Niamh"><img src="./niamh.png" alt=""><b>NIAMH</b></button>
+<button class="player" data-player="Emma" aria-label="Choose Emma"><img src="./emma.png" alt=""><b>EMMA</b></button>
+</div>
+<button id="choose-button" class="button" type="button" disabled>Choose player</button>
+<p class="help">60 SECONDS • PLACE AS MANY TONER ORDERS AS YOU CAN</p>
+</div>
+<div id="game-view" class="content hidden">
+<div class="game-head">
+<span class="active-player"><img id="active-avatar" class="avatar-small" alt=""><b id="active-name"></b></span>
+<span>POINTS <b id="score" class="stat">0</b></span><span>TIME <b id="timer" class="stat">60</b></span>
+</div>
+<div class="customer-box"><div class="customer-label">CUSTOMER</div><div id="customer-name" class="customer-name">—</div></div>
+<div class="place-toner">PLACE TONER</div>
+<div id="outcome" class="outcome idle" role="status"><span id="outcome-icon" class="outcome-icon">•</span><span id="outcome-text" class="outcome-text">READY TO ORDER</span></div>
+<button id="place-order" class="button order-button" type="button">Place order</button>
+<p class="footer">SEAN + NIAMH: 1 POINT • EMMA: WRONG ORDERS</p>
+</div>
+<div id="end-view" class="content hidden">
+<h1>TIME!</h1><p class="subtitle">SHIFT COMPLETE</p>
+<div class="order-box"><div class="order-label">FINAL SCORE</div><div id="final-score" class="order">0 POINTS</div></div>
+<p id="end-message" class="help"></p>
+<button id="play-again" class="button" type="button">Choose player</button>
+</div>
+</div></section>
 </main>
 <script>
 (() => {
-  const players = [...document.querySelectorAll(".player")];
-  const startView = document.querySelector("#start-view");
-  const gameView = document.querySelector("#game-view");
-  const endView = document.querySelector("#end-view");
-  const chooseButton = document.querySelector("#choose-button");
-  const placeButton = document.querySelector("#place-order");
-  const selectedStyle = document.createElement("style");
-  selectedStyle.textContent = ".player.selected{border:2px solid #a9f4c7;background:#253346}";
-  document.head.append(selectedStyle);
-  let selected = null, score = 0, seconds = 60, interval = null, locked = false;
-  const orders = ["TONER CARTRIDGE", "PAPER REAM", "INK BOTTLE", "LABEL ROLL", "USB CABLE", "STAPLER"];
-  let orderIndex = 0;
-  const clockLabel = document.querySelector("#clock-label");
-  players.forEach(button => button.addEventListener("click", () => {
-    players.forEach(item => item.classList.remove("selected"));
-    button.classList.add("selected");
-    selected = button.dataset.player;
-    chooseButton.disabled = false;
-  }));
-  chooseButton.disabled = true;
-  chooseButton.addEventListener("click", startGame);
-  document.querySelector("#play-again").addEventListener("click", () => {
-    endView.classList.add("hidden"); gameView.classList.add("hidden"); startView.classList.remove("hidden");
-    clockLabel.textContent = "READY";
-  });
-  function startGame() {
-    if (!selected) return;
-    score = 0; seconds = 60; orderIndex = 0; locked = false;
-    document.querySelector("#score").textContent = score;
-    document.querySelector("#timer").textContent = seconds;
-    document.querySelector("#active-name").textContent = selected.toUpperCase();
-    document.querySelector("#active-avatar").src = "./" + selected.toLowerCase() + ".png";
-    document.querySelector("#feedback").textContent = "READY?";
-    document.querySelector("#feedback").classList.remove("wrong");
-    document.querySelector("#round-hint").textContent = selected === "Emma" ? "Emma's orders are mixed up!" : "Correct order = 1 point";
-    startView.classList.add("hidden"); endView.classList.add("hidden"); gameView.classList.remove("hidden");
-    clockLabel.textContent = "ON SHIFT";
-    nextOrder();
-    clearInterval(interval);
-    interval = setInterval(() => {
-      seconds--;
-      document.querySelector("#timer").textContent = seconds;
-      if (seconds <= 0) finishGame();
-    }, 1000);
-  }
-  function nextOrder() {
-    document.querySelector("#order-text").textContent = orders[orderIndex % orders.length];
-    orderIndex++;
-  }
-  placeButton.addEventListener("click", () => {
-    if (locked || seconds <= 0) return;
-    const feedback = document.querySelector("#feedback");
-    locked = true;
-    if (selected === "Emma") {
-      feedback.textContent = "WRONG ORDER!";
-      feedback.classList.add("wrong");
-    } else {
-      score++;
-      document.querySelector("#score").textContent = score;
-      feedback.textContent = "ORDER PLACED!";
-      feedback.classList.remove("wrong");
-    }
-    placeButton.disabled = true;
-    setTimeout(() => {
-      if (seconds <= 0) return;
-      nextOrder();
-      feedback.textContent = "READY?";
-      feedback.classList.remove("wrong");
-      locked = false;
-      placeButton.disabled = false;
-    }, 550);
-  });
-  function finishGame() {
-    clearInterval(interval); interval = null;
-    seconds = 0; locked = true; placeButton.disabled = true;
-    gameView.classList.add("hidden"); endView.classList.remove("hidden");
-    clockLabel.textContent = "SHIFT ENDED";
-    document.querySelector("#final-score").textContent = score + (score === 1 ? " POINT" : " POINTS");
-    document.querySelector("#end-message").textContent = selected === "Emma" ? "Emma placed every order wrong. No points this shift!" : "Nice work. Ready for another shift?";
-  }
+const customers=["APARTO","APARTO THE LOOM","APPROVED HOUSING BODIES REGULATORY AUTHORITY (AHBRA)","ARCHWAYS","ARDSTONE STORYHOUSE","ASHDOWN CONTROLS","BALLINLOUGH REFRIGERATION","BALLYFERMOT COMMUNITY CIVIC CENTRE","BLACKROCK ABBEY NURSING HOME","BLOOMFIELD CHILDCARE","BRANDES","BURKE JOINERY","BUSINESS POST","CAFCO","CALLAN STRINGER & COMPANY","CARCESSORIES","CENTRAL SHIPPING LTD","CHEEVERSTOWN","CHESTNUT DAYCARE  CRUMLIN VILLAGE","CHESTNUT DAYCARE CHAPELIZOD","CHESTNUT DAYCARE INCHICORE","CHESTNUT DAYCARE NAVAN","CHESTNUT MONTESSORI RATHFARNHAM","CIE GROUP PROPERTY MANAGEMENT","CLEAR INSURANCE KERRY","CLEAR INSURANCE WATERFORD","CLEARSPACE HERBERT PLACE","CMCC FINANCIAL","CMG","COLLEGE OF ANAESTHESIOLOGISTS OF IRELAND","COMMUNICATIONS CLINIC","Cregan Kelly O'Brien Financial Advisors CKOB.IE","CROKE MEDICAL LAW","CRYSTAL AIR LTD","DARCY CLEARY INSURANCES","DCK","DES LALOR","DQA ARCHITECTS LTD","DUBLIN CENTRAL MISSION CLG","EDUCOGYM","ELECTRICAL SKILLS IRELAND","EML ASSOCIATES","FAIRYHOUSE STEEL","FITZSIMONS INSULATION","FOLD IRELAND","FOUNTAIN HEALTHCARE PARTNERS","FUSION EVENTS","GAELSCOIL NA CAMOÍGE","GANNON KIRWAN SOMERVILLE GKS","GATHER AND GATHER","GRIP FIX","HACKETTS","HANSARD EUROPE","HOCKEY IRELAND","HOUSING FINANCE AGENCY","HUNTSTOWN COMMUNITY CENTRE","HYLAND SHIPPING","IBAT","IHD INTERNATIONAL HOUSE DUBLIN","INDEPENDENT SITE MANAGEMENT","INDIGO REAL ESTATE MANAGEMENT IREM","INNOVATIVE FASTENERS","IPS GROUP","JACK RESTAN","JDM INSURANCE","JIM FRANEY","KRUGER LYONS","KSG FOOD SERVICES","KWS","LEARN & PLAY PRESCHOOL & AFTERSCHOOL","LP LOCKS LTD (EASTHAM PARK)","MACE PROMOTIONS","MAYLIM IRELAND","MCGRATH QUANTITY SURVEYORS","MCINERNEY ROWE","MERIEUX NUTRISCIENCES","MG BUSINESS ADVISORY LIMITED","MODULE GROUP","MORRISSEY WEALTH MANAGEMENT","MS TRANSPORT","MSS BUILDING SERVICES","MURRAYS MEDICAL","NENAGH GUARDIAN","NIALL M HOGAN & CO","NIFTIBUSINESS FLEET MANAGEMENT IRELAND","NISSAN IRELAND","PATRICK F. O'REILLY & CO. SOLICITORS PFO","PAUL TOBIN ESTATE","PEMCO PROGRESS","PHELAN CASWELL INSURANCES","PRO STAINLESS","PUNCHESTOWN","RATOATH GAA CLUB","RAY COOKE AUCTIONEERS | ESTATE AGENTS - RATHCOOLE OFFICE","RMHC IRELAND LTD","ROISIN LAFFERTY DESIGN","SANDFORD PARK SCHOOL","SILVERBACK","SPRAOI CHILDCARE","ST DAVIDS","ST MICHAELS COLLEGE","ST PAULS","ST. MICHAEL'S HOUSE","ST. SENAN'S NATIONAL SCHOOL  FOYNES","SWEET CICELY","SYLO.IE","TEMPLEOGUE COLLEGE","TERESIAN SCHOOL JUNIOR SCHOOL","TFI LOCAL LINK LAOIS OFFALY","THE ISLAND GOLF CLUB","THE TERESIAN SCHOOL (SENIOR)","THE VILLAGE HOTEL","TICKLES CHILDCARE","TOLKA RIVER PROJECT","URBANVOLT","VOLTALIA","WALKAIR DALDROP","WALSH BUSINESS CONSULTING","WATERLAND","WESTSTART","WILLOWDAS (MEATH WOMENS REFUGE)","WINDOW FASHIONS","WINDSOR","WOODTOWN FENCING LTD","YOPLAIT IRELAND LTD."];
+const players=[...document.querySelectorAll(".player")];
+const startView=document.querySelector("#start-view");
+const gameView=document.querySelector("#game-view");
+const endView=document.querySelector("#end-view");
+const chooseButton=document.querySelector("#choose-button");
+const placeButton=document.querySelector("#place-order");
+const clockLabel=document.querySelector("#clock-label");
+let selected=null,score=0,seconds=60,interval=null,locked=false,currentCustomer=-1;
+players.forEach(button=>button.addEventListener("click",()=>{
+ players.forEach(item=>item.classList.remove("selected"));
+ button.classList.add("selected");
+ selected=button.dataset.player;
+ chooseButton.disabled=false;
+}));
+chooseButton.addEventListener("click",startGame);
+document.querySelector("#play-again").addEventListener("click",()=>{
+ endView.classList.add("hidden");gameView.classList.add("hidden");startView.classList.remove("hidden");
+ clockLabel.textContent="READY";
+});
+function nextCustomer(){
+ let next=Math.floor(Math.random()*customers.length);
+ if(customers.length>1&&next===currentCustomer)next=(next+1)%customers.length;
+ currentCustomer=next;
+ document.querySelector("#customer-name").textContent=customers[currentCustomer];
+}
+function showOutcome(isWrong){
+ const outcome=document.querySelector("#outcome");
+ outcome.classList.toggle("wrong",isWrong);
+ outcome.classList.toggle("idle",false);
+ document.querySelector("#outcome-icon").textContent=isWrong?"✕":"✓";
+ document.querySelector("#outcome-text").textContent=isWrong?"WRONG ORDER":"ORDER PLACED";
+}
+function startGame(){
+ if(!selected)return;
+ score=0;seconds=60;locked=false;
+ document.querySelector("#score").textContent=score;
+ document.querySelector("#timer").textContent=seconds;
+ document.querySelector("#active-name").textContent=selected.toUpperCase();
+ document.querySelector("#active-avatar").src="./"+selected.toLowerCase()+".png";
+ document.querySelector("#outcome-icon").textContent="•";
+ document.querySelector("#outcome-text").textContent="READY TO ORDER";
+ document.querySelector("#outcome").classList.remove("wrong");
+ document.querySelector("#outcome").classList.add("idle");
+ placeButton.disabled=false;
+ nextCustomer();
+ startView.classList.add("hidden");endView.classList.add("hidden");gameView.classList.remove("hidden");
+ clockLabel.textContent="ON SHIFT";
+ clearInterval(interval);
+ interval=setInterval(()=>{
+  seconds--;
+  document.querySelector("#timer").textContent=seconds;
+  if(seconds<=0)finishGame();
+ },1000);
+}
+placeButton.addEventListener("click",()=>{
+ if(locked||seconds<=0)return;
+ locked=true;
+ const isEmma=selected==="Emma";
+ showOutcome(isEmma);
+ if(!isEmma){score++;document.querySelector("#score").textContent=score}
+ placeButton.disabled=true;
+ setTimeout(()=>{
+  if(seconds<=0)return;
+  nextCustomer();
+  document.querySelector("#outcome-icon").textContent="•";
+  document.querySelector("#outcome-text").textContent="READY TO ORDER";
+  document.querySelector("#outcome").classList.remove("wrong");
+  document.querySelector("#outcome").classList.add("idle");
+  locked=false;placeButton.disabled=false;
+ },800);
+});
+function finishGame(){
+ clearInterval(interval);interval=null;seconds=0;locked=true;placeButton.disabled=true;
+ gameView.classList.add("hidden");endView.classList.remove("hidden");clockLabel.textContent="SHIFT ENDED";
+ document.querySelector("#final-score").textContent=score+(score===1?" POINT":" POINTS");
+ document.querySelector("#end-message").textContent=selected==="Emma"?"Emma's orders were wrong. No points this shift!":"Nice work. Ready for another shift?";
+}
 })();
 </script>
 </body>
