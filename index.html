@@ -34,10 +34,12 @@ h1{margin:0;font-size:clamp(20px,4vw,48px);color:var(--mint);letter-spacing:.13e
 .active-player{display:flex;align-items:center;gap:4px}
 .stat{color:var(--mint);font-weight:bold}
 .avatar-small{height:clamp(25px,5.2vh,48px);width:clamp(25px,5.2vh,48px);object-fit:contain;image-rendering:pixelated}
-.customer-box{border:1px solid #a9f4c766;background:#101720;padding:clamp(5px,1vh,10px);width:100%;max-width:560px}
+.customer-box{border:1px solid #a9f4c766;background:#101720;padding:3px 8px;width:min(72%,380px);max-width:380px}
 .customer-label{color:#9aa9b8;font-size:clamp(7px,.9vw,10px);text-transform:uppercase;letter-spacing:.15em}
 .customer-name{font-size:clamp(9px,1.4vw,16px);color:#fff;font-weight:800;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.place-toner{font-size:clamp(17px,3vw,34px);color:var(--mint);font-weight:1000;letter-spacing:.1em;text-shadow:2px 2px #39785b}
+.toner-prompt{font-size:clamp(9px,1.35vw,15px);color:var(--cream);font-weight:800;letter-spacing:.06em}.toner-prompt strong{color:var(--mint);font-size:clamp(13px,2vw,22px)}
+.toner-options{display:flex;align-items:center;justify-content:center;gap:clamp(7px,1.5vw,16px)}
+.toner-choice{width:clamp(34px,6.5vw,68px);aspect-ratio:1;border-radius:50%;border:3px solid #e6e3d7;display:grid;place-items:center;font:1000 clamp(12px,2vw,20px) ui-monospace,monospace;cursor:pointer;box-shadow:0 3px 0 #0008;transition:transform .12s,filter .12s}.toner-choice:hover:not(:disabled),.toner-choice:focus-visible{transform:translateY(-2px) scale(1.05);filter:brightness(1.15);outline:2px solid var(--cream);outline-offset:2px}.toner-choice:disabled{opacity:.62;cursor:default}.toner-c{background:#17cde2;color:#06232a}.toner-m{background:#df35c8;color:#fff}.toner-y{background:#f4d43c;color:#302600}.toner-k{background:#161923;color:#fff;border-color:#aeb7c4}
 .outcome{min-height:clamp(36px,7vh,66px);display:flex;align-items:center;justify-content:center;gap:clamp(6px,1.2vw,14px);font-weight:1000;color:var(--mint)}
 .outcome-icon{font-size:clamp(29px,5.5vw,62px);line-height:1}
 .outcome-text{font-size:clamp(12px,2.1vw,24px);letter-spacing:.04em}
@@ -49,7 +51,7 @@ h1{margin:0;font-size:clamp(20px,4vw,48px);color:var(--mint);letter-spacing:.13e
 .order-label{color:#9aa9b8;font-size:clamp(7px,.95vw,11px);text-transform:uppercase;letter-spacing:.15em}
 .order{font-size:clamp(13px,2.5vw,28px);color:#fff;font-weight:900;margin-top:4px}
 .hidden{display:none!important}
-@media(max-width:600px){body{padding:8px}.screen{left:24.55%;top:10.55%;width:54.9%;height:53.85%}.app{padding:5px}.topline{padding-bottom:3px}.player{padding:2px}.player img{height:38px}}
+@media(max-width:600px){body{padding:8px}.screen{left:24.55%;top:10.55%;width:54.9%;height:53.85%}.app{padding:4px}.topline{padding-bottom:3px}.player{padding:2px}.player img{height:38px}.game-view{gap:2px}.customer-box{padding:2px 5px}.toner-choice{width:30px;border-width:2px}.outcome{min-height:28px}}
 </style>
 </head>
 <body>
@@ -67,16 +69,21 @@ h1{margin:0;font-size:clamp(20px,4vw,48px);color:var(--mint);letter-spacing:.13e
 <button id="choose-button" class="button" type="button" disabled>Log in as</button>
 <p class="help">60 SECONDS • PLACE AS MANY TONER ORDERS AS YOU CAN</p>
 </div>
-<div id="game-view" class="content hidden">
+<div id="game-view" class="content hidden game-view">
 <div class="game-head">
 <span class="active-player"><img id="active-avatar" class="avatar-small" alt=""><b id="active-name"></b></span>
 <span>ORDERS PLACED <b id="score" class="stat">0</b></span><span>TIME <b id="timer" class="stat">60</b></span>
 </div>
 <div class="customer-box"><div class="customer-label">CUSTOMER</div><div id="customer-name" class="customer-name">—</div></div>
-<div class="place-toner">PLACE TONER</div>
+<div class="toner-prompt">PLEASE SELECT <strong id="toner-prompt">CYAN</strong> TONER</div>
+<div class="toner-options" role="group" aria-label="Choose toner colour">
+<button class="toner-choice toner-c" type="button" data-toner="C" aria-label="Cyan toner" title="Cyan toner">C</button>
+<button class="toner-choice toner-m" type="button" data-toner="M" aria-label="Magenta toner" title="Magenta toner">M</button>
+<button class="toner-choice toner-y" type="button" data-toner="Y" aria-label="Yellow toner" title="Yellow toner">Y</button>
+<button class="toner-choice toner-k" type="button" data-toner="K" aria-label="Black toner" title="Black toner">K</button>
+</div>
 <div id="outcome" class="outcome idle" role="status"><span id="outcome-icon" class="outcome-icon">•</span><span id="outcome-text" class="outcome-text">READY TO ORDER</span></div>
-<button id="place-order" class="button order-button" type="button">Place order</button>
-<p class="footer">SEAN + NIAMH: ORDERS COUNT • EMMA: NO ORDERS</p>
+<p class="footer">MATCH THE TONER • EMMA ALWAYS WRONG</p>
 </div>
 <div id="end-view" class="content hidden">
 <h1>TIME!</h1><p class="subtitle">SHIFT COMPLETE</p>
@@ -94,9 +101,10 @@ const startView=document.querySelector("#start-view");
 const gameView=document.querySelector("#game-view");
 const endView=document.querySelector("#end-view");
 const chooseButton=document.querySelector("#choose-button");
-const placeButton=document.querySelector("#place-order");
+const tonerButtons=[...document.querySelectorAll(".toner-choice")];
 const clockLabel=document.querySelector("#clock-label");
-let selected=null,score=0,seconds=60,interval=null,locked=false,currentCustomer=-1;
+let selected=null,score=0,seconds=60,interval=null,locked=false,currentCustomer=-1,currentToner="";
+const tonerNames={C:"CYAN",M:"MAGENTA",Y:"YELLOW",K:"BLACK"};
 players.forEach(button=>button.addEventListener("click",()=>{
  players.forEach(item=>item.classList.remove("selected"));
  button.classList.add("selected");
@@ -116,6 +124,20 @@ function nextCustomer(){
  currentCustomer=next;
  document.querySelector("#customer-name").textContent=customers[currentCustomer];
 }
+function nextOrder(){
+ nextCustomer();
+ const choices=Object.keys(tonerNames);
+ let next;
+ do{next=choices[Math.floor(Math.random()*choices.length)]}while(next===currentToner);
+ currentToner=next;
+ document.querySelector("#toner-prompt").textContent=tonerNames[currentToner];
+}
+function resetOutcome(){
+ document.querySelector("#outcome-icon").textContent="•";
+ document.querySelector("#outcome-text").textContent="READY TO ORDER";
+ document.querySelector("#outcome").classList.remove("wrong");
+ document.querySelector("#outcome").classList.add("idle");
+}
 function showOutcome(isWrong){
  const outcome=document.querySelector("#outcome");
  outcome.classList.toggle("wrong",isWrong);
@@ -134,8 +156,8 @@ function startGame(){
  document.querySelector("#outcome-text").textContent="READY TO ORDER";
  document.querySelector("#outcome").classList.remove("wrong");
  document.querySelector("#outcome").classList.add("idle");
- placeButton.disabled=false;
- nextCustomer();
+ tonerButtons.forEach(button=>button.disabled=false);
+ nextOrder();
  startView.classList.add("hidden");endView.classList.add("hidden");gameView.classList.remove("hidden");
  clockLabel.textContent="ON SHIFT";
  clearInterval(interval);
@@ -145,25 +167,22 @@ function startGame(){
   if(seconds<=0)finishGame();
  },1000);
 }
-placeButton.addEventListener("click",()=>{
+tonerButtons.forEach(button=>button.addEventListener("click",()=>{
  if(locked||seconds<=0)return;
  locked=true;
- const isEmma=selected==="Emma";
- showOutcome(isEmma);
- if(!isEmma){score++;document.querySelector("#score").textContent=score}
- placeButton.disabled=true;
+ const isWrong=selected==="Emma"||button.dataset.toner!==currentToner;
+ showOutcome(isWrong);
+ if(!isWrong){score++;document.querySelector("#score").textContent=score}
+ tonerButtons.forEach(choice=>choice.disabled=true);
  setTimeout(()=>{
   if(seconds<=0)return;
-  nextCustomer();
-  document.querySelector("#outcome-icon").textContent="•";
-  document.querySelector("#outcome-text").textContent="READY TO ORDER";
-  document.querySelector("#outcome").classList.remove("wrong");
-  document.querySelector("#outcome").classList.add("idle");
-  locked=false;placeButton.disabled=false;
+  nextOrder();
+  resetOutcome();
+  locked=false;tonerButtons.forEach(choice=>choice.disabled=false);
  },800);
-});
+}));
 function finishGame(){
- clearInterval(interval);interval=null;seconds=0;locked=true;placeButton.disabled=true;
+ clearInterval(interval);interval=null;seconds=0;locked=true;tonerButtons.forEach(button=>button.disabled=true);
  gameView.classList.add("hidden");endView.classList.remove("hidden");clockLabel.textContent="SHIFT ENDED";
  document.querySelector("#final-score").textContent=score;
  document.querySelector("#end-message").textContent=selected==="Emma"?"Emma's orders were wrong. No orders placed this shift!":"Nice work. Ready for another shift?";
