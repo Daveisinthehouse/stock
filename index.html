@@ -70,17 +70,17 @@ h1{margin:0;font-size:clamp(20px,4vw,48px);color:var(--mint);letter-spacing:.13e
 <div id="game-view" class="content hidden">
 <div class="game-head">
 <span class="active-player"><img id="active-avatar" class="avatar-small" alt=""><b id="active-name"></b></span>
-<span>POINTS <b id="score" class="stat">0</b></span><span>TIME <b id="timer" class="stat">60</b></span>
+<span>ORDERS PLACED <b id="score" class="stat">0</b></span><span>TIME <b id="timer" class="stat">60</b></span>
 </div>
 <div class="customer-box"><div class="customer-label">CUSTOMER</div><div id="customer-name" class="customer-name">—</div></div>
 <div class="place-toner">PLACE TONER</div>
 <div id="outcome" class="outcome idle" role="status"><span id="outcome-icon" class="outcome-icon">•</span><span id="outcome-text" class="outcome-text">READY TO ORDER</span></div>
 <button id="place-order" class="button order-button" type="button">Place order</button>
-<p class="footer">SEAN + NIAMH: 1 POINT • EMMA: WRONG ORDERS</p>
+<p class="footer">SEAN + NIAMH: ORDERS COUNT • EMMA: NO ORDERS</p>
 </div>
 <div id="end-view" class="content hidden">
 <h1>TIME!</h1><p class="subtitle">SHIFT COMPLETE</p>
-<div class="order-box"><div class="order-label">FINAL SCORE</div><div id="final-score" class="order">0 POINTS</div></div>
+<div class="order-box"><div class="order-label">ORDERS PLACED</div><div id="final-score" class="order">0</div></div>
 <p id="end-message" class="help"></p>
 <button id="play-again" class="button" type="button">Log in as another player</button>
 </div>
@@ -165,8 +165,8 @@ placeButton.addEventListener("click",()=>{
 function finishGame(){
  clearInterval(interval);interval=null;seconds=0;locked=true;placeButton.disabled=true;
  gameView.classList.add("hidden");endView.classList.remove("hidden");clockLabel.textContent="SHIFT ENDED";
- document.querySelector("#final-score").textContent=score+(score===1?" POINT":" POINTS");
- document.querySelector("#end-message").textContent=selected==="Emma"?"Emma's orders were wrong. No points this shift!":"Nice work. Ready for another shift?";
+ document.querySelector("#final-score").textContent=score;
+ document.querySelector("#end-message").textContent=selected==="Emma"?"Emma's orders were wrong. No orders placed this shift!":"Nice work. Ready for another shift?";
 }
 })();
 </script>
