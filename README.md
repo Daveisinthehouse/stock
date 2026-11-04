@@ -6,7 +6,7 @@ A tiny retro office game that runs in any modern browser. No dependencies or bui
 
 Open `index.html` locally, or enable GitHub Pages for this repository and visit the published site.
 
-Choose Sean, Niamh, or Emma, then start the 60-second shift. The computer displays a customer from the supplied customer export and says **PLACE TONER**. Press **Place order** to process as many orders as you can.
+Choose Sean, Niamh, or Emma, then start the 60-second shift. The computer displays a customer from the supplied customer export and prompts for a toner colour: cyan (C), magenta (M), yellow (Y), or black (K). Select the matching coloured circle to process the order.
 
 - Sean and Niamh see a green tick with **ORDER PLACED** and increase the **ORDERS PLACED** count for each successful order.
 - Emma sees a red X with **WRONG ORDER** and does not increase the count.
