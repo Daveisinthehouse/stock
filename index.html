@@ -143,6 +143,20 @@ function nextCustomer(){
  currentCustomer=next;
  document.querySelector("#customer-name").textContent=customers[currentCustomer];
 }
+function shuffleTonerOptions(){
+ const optionsContainer=document.querySelector(".toner-options");
+ const options=[...optionsContainer.children];
+ const previous=options.map(button=>button.dataset.toner).join("");
+ let shuffled;
+ do{
+  shuffled=[...options];
+  for(let index=shuffled.length-1;index>0;index--){
+   const swap=Math.floor(Math.random()*(index+1));
+   [shuffled[index],shuffled[swap]]=[shuffled[swap],shuffled[index]];
+  }
+ }while(shuffled.map(button=>button.dataset.toner).join("")===previous);
+ shuffled.forEach(button=>optionsContainer.append(button));
+}
 function nextOrder(){
  nextCustomer();
  const choices=Object.keys(tonerNames);
@@ -206,6 +220,7 @@ tonerButtons.forEach(button=>button.addEventListener("click",()=>{
  tonerButtons.forEach(choice=>choice.disabled=true);
  setTimeout(()=>{
   if(seconds<=0)return;
+  shuffleTonerOptions();
   nextOrder();
   resetOutcome();
   locked=false;tonerButtons.forEach(choice=>choice.disabled=false);
