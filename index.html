@@ -101,12 +101,11 @@ h1{margin:0;font-size:clamp(20px,4vw,48px);color:var(--mint);letter-spacing:.13e
 <h1>TIME!</h1><p class="subtitle">SHIFT COMPLETE</p>
 <div class="order-box"><div class="order-label">ORDERS PLACED</div><div id="final-score" class="order">0</div></div>
 <p id="end-message" class="help"></p>
-<button id="play-again" class="button" type="button">Log in as another player</button>
+<button id="play-again" class="button" type="button">Log in as a different user</button>
 </div>
 </div></section>
 </main>
 <audio id="office-sound" src="./office.mp3" loop preload="auto"></audio>
-<audio id="keyboard-sound" src="./keyboard.mp3" preload="auto"></audio>
 <script>
 (() => {
 const customers=["APARTO","APARTO THE LOOM","APPROVED HOUSING BODIES REGULATORY AUTHORITY (AHBRA)","ARCHWAYS","ARDSTONE STORYHOUSE","ASHDOWN CONTROLS","BALLINLOUGH REFRIGERATION","BALLYFERMOT COMMUNITY CIVIC CENTRE","BLACKROCK ABBEY NURSING HOME","BLOOMFIELD CHILDCARE","BRANDES","BURKE JOINERY","BUSINESS POST","CAFCO","CALLAN STRINGER & COMPANY","CARCESSORIES","CENTRAL SHIPPING LTD","CHEEVERSTOWN","CHESTNUT DAYCARE  CRUMLIN VILLAGE","CHESTNUT DAYCARE CHAPELIZOD","CHESTNUT DAYCARE INCHICORE","CHESTNUT DAYCARE NAVAN","CHESTNUT MONTESSORI RATHFARNHAM","CIE GROUP PROPERTY MANAGEMENT","CLEAR INSURANCE KERRY","CLEAR INSURANCE WATERFORD","CLEARSPACE HERBERT PLACE","CMCC FINANCIAL","CMG","COLLEGE OF ANAESTHESIOLOGISTS OF IRELAND","COMMUNICATIONS CLINIC","Cregan Kelly O'Brien Financial Advisors CKOB.IE","CROKE MEDICAL LAW","CRYSTAL AIR LTD","DARCY CLEARY INSURANCES","DCK","DES LALOR","DQA ARCHITECTS LTD","DUBLIN CENTRAL MISSION CLG","EDUCOGYM","ELECTRICAL SKILLS IRELAND","EML ASSOCIATES","FAIRYHOUSE STEEL","FITZSIMONS INSULATION","FOLD IRELAND","FOUNTAIN HEALTHCARE PARTNERS","FUSION EVENTS","GAELSCOIL NA CAMOÍGE","GANNON KIRWAN SOMERVILLE GKS","GATHER AND GATHER","GRIP FIX","HACKETTS","HANSARD EUROPE","HOCKEY IRELAND","HOUSING FINANCE AGENCY","HUNTSTOWN COMMUNITY CENTRE","HYLAND SHIPPING","IBAT","IHD INTERNATIONAL HOUSE DUBLIN","INDEPENDENT SITE MANAGEMENT","INDIGO REAL ESTATE MANAGEMENT IREM","INNOVATIVE FASTENERS","IPS GROUP","JACK RESTAN","JDM INSURANCE","JIM FRANEY","KRUGER LYONS","KSG FOOD SERVICES","KWS","LEARN & PLAY PRESCHOOL & AFTERSCHOOL","LP LOCKS LTD (EASTHAM PARK)","MACE PROMOTIONS","MAYLIM IRELAND","MCGRATH QUANTITY SURVEYORS","MCINERNEY ROWE","MERIEUX NUTRISCIENCES","MG BUSINESS ADVISORY LIMITED","MODULE GROUP","MORRISSEY WEALTH MANAGEMENT","MS TRANSPORT","MSS BUILDING SERVICES","MURRAYS MEDICAL","NENAGH GUARDIAN","NIALL M HOGAN & CO","NIFTIBUSINESS FLEET MANAGEMENT IRELAND","NISSAN IRELAND","PATRICK F. O'REILLY & CO. SOLICITORS PFO","PAUL TOBIN ESTATE","PEMCO PROGRESS","PHELAN CASWELL INSURANCES","PRO STAINLESS","PUNCHESTOWN","RATOATH GAA CLUB","RAY COOKE AUCTIONEERS | ESTATE AGENTS - RATHCOOLE OFFICE","RMHC IRELAND LTD","ROISIN LAFFERTY DESIGN","SANDFORD PARK SCHOOL","SILVERBACK","SPRAOI CHILDCARE","ST DAVIDS","ST MICHAELS COLLEGE","ST PAULS","ST. MICHAEL'S HOUSE","ST. SENAN'S NATIONAL SCHOOL  FOYNES","SWEET CICELY","SYLO.IE","TEMPLEOGUE COLLEGE","TERESIAN SCHOOL JUNIOR SCHOOL","TFI LOCAL LINK LAOIS OFFALY","THE ISLAND GOLF CLUB","THE TERESIAN SCHOOL (SENIOR)","THE VILLAGE HOTEL","TICKLES CHILDCARE","TOLKA RIVER PROJECT","URBANVOLT","VOLTALIA","WALKAIR DALDROP","WALSH BUSINESS CONSULTING","WATERLAND","WESTSTART","WILLOWDAS (MEATH WOMENS REFUGE)","WINDOW FASHIONS","WINDSOR","WOODTOWN FENCING LTD","YOPLAIT IRELAND LTD."];
@@ -117,12 +116,9 @@ const endView=document.querySelector("#end-view");
 const chooseButton=document.querySelector("#choose-button");
 const tonerButtons=[...document.querySelectorAll(".toner-choice")];
 const officeSound=document.querySelector("#office-sound");
-const keyboardSound=document.querySelector("#keyboard-sound");
 const powerButton=document.querySelector("#power-button");
 officeSound.volume=0.22;
-keyboardSound.volume=0.4;
 function startOfficeSound(){officeSound.play().catch(()=>{});}
-function playKeyboardSound(){keyboardSound.currentTime=0;keyboardSound.play().catch(()=>{});}
 powerButton.addEventListener("click",()=>{
  const speech=new SpeechSynthesisUtterance("Fuck it! I'm going home.");
  speech.pitch=1.3;
@@ -137,7 +133,7 @@ const clockLabel=document.querySelector("#clock-label");
 let selected=null,score=0,seconds=60,interval=null,locked=false,currentCustomer=-1,currentToner="";
 const tonerNames={C:"CYAN",M:"MAGENTA",Y:"YELLOW",K:"BLACK"};
 players.forEach(button=>button.addEventListener("click",()=>{
- playKeyboardSound();
+ 
  startOfficeSound();
  players.forEach(item=>item.classList.remove("selected"));
  button.classList.add("selected");
@@ -145,9 +141,9 @@ players.forEach(button=>button.addEventListener("click",()=>{
  chooseButton.textContent="Log in as "+selected;
  chooseButton.disabled=false;
 }));
-chooseButton.addEventListener("click",()=>{playKeyboardSound();startOfficeSound();startGame();});
+chooseButton.addEventListener("click",()=>{startOfficeSound();startGame();});
 document.querySelector("#play-again").addEventListener("click",()=>{
- playKeyboardSound();
+ 
  endView.classList.add("hidden");gameView.classList.add("hidden");startView.classList.remove("hidden");
  selected=null;players.forEach(item=>item.classList.remove("selected"));chooseButton.disabled=true;chooseButton.textContent="Log in as";
  clockLabel.textContent="READY";
@@ -227,7 +223,7 @@ function startGame(){
 }
 tonerButtons.forEach(button=>button.addEventListener("click",()=>{
  if(locked||seconds<=0)return;
- playKeyboardSound();
+ 
  locked=true;
  const isWrong=selected==="Emma"||button.dataset.toner!==currentToner;
  showOutcome(isWrong);
