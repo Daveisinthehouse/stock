@@ -94,6 +94,7 @@ h1{margin:0;font-size:clamp(20px,4vw,48px);color:var(--mint);letter-spacing:.13e
 </div>
 <div class="customer-box"><div class="customer-label">CUSTOMER</div><div id="customer-name" class="customer-name">—</div></div>
 <div class="toner-prompt">PLEASE SELECT <strong id="toner-prompt">CYAN</strong> TONER</div>
+<p id="shuffle-speed" class="footer">POSITION SPEED: NORMAL</p>
 <div class="toner-options" role="group" aria-label="Choose toner colour">
 <button class="toner-choice toner-c" type="button" data-toner="C" aria-label="Cyan toner" title="Cyan toner">C</button>
 <button class="toner-choice toner-m" type="button" data-toner="M" aria-label="Magenta toner" title="Magenta toner">M</button>
@@ -141,7 +142,15 @@ powerButton.addEventListener("click",()=>{
  window.speechSynthesis.speak(speech);
 });
 const clockLabel=document.querySelector("#clock-label");
-let selected=null,score=0,seconds=60,interval=null,locked=false,currentCustomer=-1,currentToner="";
+let selected=null,score=0,seconds=60,interval=null,shuffleInterval=null,shuffleStage="",locked=false,currentCustomer=-1,currentToner="";
+function setShuffleSpeed(stage,delay){
+ if(shuffleStage===stage)return;
+ shuffleStage=stage;
+ if(shuffleInterval)clearInterval(shuffleInterval);
+ shuffleInterval=setInterval(()=>{if(seconds>0)shuffleTonerOptions();},delay);
+ const label=document.querySelector("#shuffle-speed");
+ if(label)label.textContent="POSITION SPEED: "+stage;
+}
 const tonerNames={C:"CYAN",M:"MAGENTA",Y:"YELLOW",K:"BLACK"};
 players.forEach(button=>button.addEventListener("click",()=>{
  
@@ -212,7 +221,9 @@ function updateWallClock(){
 }
 function startGame(){
  if(!selected)return;
- score=0;seconds=60;locked=false;
+ score=0;seconds=60;locked=false;shuffleStage="";
+ if(shuffleInterval){clearInterval(shuffleInterval);shuffleInterval=null;}
+ setShuffleSpeed("NORMAL",1400);
  document.querySelector("#score").textContent=score;
  updateWallClock();
  document.querySelector("#active-name").textContent=selected.toUpperCase();
@@ -230,6 +241,9 @@ function startGame(){
  interval=setInterval(()=>{
   seconds--;
   updateWallClock();
+  const elapsed=60-seconds;
+  if(elapsed>=40)setShuffleSpeed("SUPER FAST",220);
+  else if(elapsed>=20)setShuffleSpeed("MEDIUM",650);
   if(seconds<=0)finishGame();
  },1000);
 }
@@ -250,7 +264,9 @@ tonerButtons.forEach(button=>button.addEventListener("click",()=>{
  },800);
 }));
 function finishGame(){
- clearInterval(interval);interval=null;seconds=0;locked=true;tonerButtons.forEach(button=>button.disabled=true);
+ clearInterval(interval);interval=null;
+ if(shuffleInterval){clearInterval(shuffleInterval);shuffleInterval=null;}
+ seconds=0;locked=true;tonerButtons.forEach(button=>button.disabled=true);
  gameView.classList.add("hidden");endView.classList.remove("hidden");clockLabel.textContent="3:30";
  document.querySelector("#final-score").textContent=score;
  document.querySelector("#end-message").textContent="Nice work. Ready for another shift?";
