@@ -95,7 +95,7 @@ h1{margin:0;font-size:clamp(20px,4vw,48px);color:var(--mint);letter-spacing:.13e
 <button class="toner-choice toner-k" type="button" data-toner="K" aria-label="Black toner" title="Black toner">K</button>
 </div>
 <div id="outcome" class="outcome idle" role="status"><span id="outcome-icon" class="outcome-icon">•</span><span id="outcome-text" class="outcome-text">READY TO ORDER</span></div>
-<p class="footer">MATCH THE TONER • EMMA ALWAYS WRONG</p>
+<p class="footer">MATCH THE TONER • PLACE THE RIGHT ORDER</p>
 </div>
 <div id="end-view" class="content hidden">
 <h1>TIME!</h1><p class="subtitle">SHIFT COMPLETE</p>
@@ -225,7 +225,7 @@ tonerButtons.forEach(button=>button.addEventListener("click",()=>{
  if(locked||seconds<=0)return;
  
  locked=true;
- const isWrong=selected==="Emma"||button.dataset.toner!==currentToner;
+ const isWrong=button.dataset.toner!==currentToner;
  showOutcome(isWrong);
  if(!isWrong){score++;document.querySelector("#score").textContent=score}
  tonerButtons.forEach(choice=>choice.disabled=true);
@@ -241,7 +241,7 @@ function finishGame(){
  clearInterval(interval);interval=null;seconds=0;locked=true;tonerButtons.forEach(button=>button.disabled=true);
  gameView.classList.add("hidden");endView.classList.remove("hidden");clockLabel.textContent="3:30";
  document.querySelector("#final-score").textContent=score;
- document.querySelector("#end-message").textContent=selected==="Emma"?"Emma's orders were wrong. No orders placed this shift!":"Nice work. Ready for another shift?";
+ document.querySelector("#end-message").textContent="Nice work. Ready for another shift?";
 }
 })();
 </script>
