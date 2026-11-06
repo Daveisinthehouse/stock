@@ -71,7 +71,13 @@ h1{margin:0;font-size:clamp(20px,4vw,48px);color:var(--mint);letter-spacing:.13e
 <div class="wall-clock" aria-label="Wall clock"><span class="clock-hand hour" id="hour-hand"></span><span class="clock-hand minute" id="minute-hand"></span><span class="clock-pin"></span><span class="wall-clock-time" id="wall-clock-time">3:15</span></div>
 <section class="screen" aria-live="polite"><div class="app">
 <div class="topline"><span class="brand">STOCK // ORDER TERMINAL</span><span id="clock-label">READY</span></div>
-<div id="start-view" class="content">
+<div id="intro-view" class="content">
+<h1>STOCK</h1>
+<p class="subtitle">PLACE AS MANY ORDERS BEFORE WESTCOAST CLOSES</p>
+<p class="help">THE CLOCK IS TICKING. GET READY.</p>
+<button id="begin-button" class="button" type="button">START SHIFT</button>
+</div>
+<div id="start-view" class="content hidden">
 <h1>STOCK</h1><p class="subtitle">TONER ORDER SHIFT</p><p class="help">LOG IN AS</p>
 <div class="players" role="group" aria-label="Choose player">
 <button class="player" data-player="Sean" aria-label="Choose Sean"><img src="./sean.png" alt=""><b>SEAN</b></button>
@@ -99,7 +105,7 @@ h1{margin:0;font-size:clamp(20px,4vw,48px);color:var(--mint);letter-spacing:.13e
 </div>
 <div id="end-view" class="content hidden">
 <h1>TIME!</h1><p class="subtitle">SHIFT COMPLETE</p>
-<div class="order-box"><div class="order-label">ORDERS PLACED</div><div id="final-score" class="order">0</div></div>
+<div class="order-box"><div class="order-label">YOUR SCORE — ORDERS PLACED</div><div id="final-score" class="order">0</div></div>
 <p id="end-message" class="help"></p>
 <button id="play-again" class="button" type="button">Log in as a different user</button>
 </div>
@@ -110,7 +116,12 @@ h1{margin:0;font-size:clamp(20px,4vw,48px);color:var(--mint);letter-spacing:.13e
 (() => {
 const customers=["APARTO","APARTO THE LOOM","APPROVED HOUSING BODIES REGULATORY AUTHORITY (AHBRA)","ARCHWAYS","ARDSTONE STORYHOUSE","ASHDOWN CONTROLS","BALLINLOUGH REFRIGERATION","BALLYFERMOT COMMUNITY CIVIC CENTRE","BLACKROCK ABBEY NURSING HOME","BLOOMFIELD CHILDCARE","BRANDES","BURKE JOINERY","BUSINESS POST","CAFCO","CALLAN STRINGER & COMPANY","CARCESSORIES","CENTRAL SHIPPING LTD","CHEEVERSTOWN","CHESTNUT DAYCARE  CRUMLIN VILLAGE","CHESTNUT DAYCARE CHAPELIZOD","CHESTNUT DAYCARE INCHICORE","CHESTNUT DAYCARE NAVAN","CHESTNUT MONTESSORI RATHFARNHAM","CIE GROUP PROPERTY MANAGEMENT","CLEAR INSURANCE KERRY","CLEAR INSURANCE WATERFORD","CLEARSPACE HERBERT PLACE","CMCC FINANCIAL","CMG","COLLEGE OF ANAESTHESIOLOGISTS OF IRELAND","COMMUNICATIONS CLINIC","Cregan Kelly O'Brien Financial Advisors CKOB.IE","CROKE MEDICAL LAW","CRYSTAL AIR LTD","DARCY CLEARY INSURANCES","DCK","DES LALOR","DQA ARCHITECTS LTD","DUBLIN CENTRAL MISSION CLG","EDUCOGYM","ELECTRICAL SKILLS IRELAND","EML ASSOCIATES","FAIRYHOUSE STEEL","FITZSIMONS INSULATION","FOLD IRELAND","FOUNTAIN HEALTHCARE PARTNERS","FUSION EVENTS","GAELSCOIL NA CAMOÍGE","GANNON KIRWAN SOMERVILLE GKS","GATHER AND GATHER","GRIP FIX","HACKETTS","HANSARD EUROPE","HOCKEY IRELAND","HOUSING FINANCE AGENCY","HUNTSTOWN COMMUNITY CENTRE","HYLAND SHIPPING","IBAT","IHD INTERNATIONAL HOUSE DUBLIN","INDEPENDENT SITE MANAGEMENT","INDIGO REAL ESTATE MANAGEMENT IREM","INNOVATIVE FASTENERS","IPS GROUP","JACK RESTAN","JDM INSURANCE","JIM FRANEY","KRUGER LYONS","KSG FOOD SERVICES","KWS","LEARN & PLAY PRESCHOOL & AFTERSCHOOL","LP LOCKS LTD (EASTHAM PARK)","MACE PROMOTIONS","MAYLIM IRELAND","MCGRATH QUANTITY SURVEYORS","MCINERNEY ROWE","MERIEUX NUTRISCIENCES","MG BUSINESS ADVISORY LIMITED","MODULE GROUP","MORRISSEY WEALTH MANAGEMENT","MS TRANSPORT","MSS BUILDING SERVICES","MURRAYS MEDICAL","NENAGH GUARDIAN","NIALL M HOGAN & CO","NIFTIBUSINESS FLEET MANAGEMENT IRELAND","NISSAN IRELAND","PATRICK F. O'REILLY & CO. SOLICITORS PFO","PAUL TOBIN ESTATE","PEMCO PROGRESS","PHELAN CASWELL INSURANCES","PRO STAINLESS","PUNCHESTOWN","RATOATH GAA CLUB","RAY COOKE AUCTIONEERS | ESTATE AGENTS - RATHCOOLE OFFICE","RMHC IRELAND LTD","ROISIN LAFFERTY DESIGN","SANDFORD PARK SCHOOL","SILVERBACK","SPRAOI CHILDCARE","ST DAVIDS","ST MICHAELS COLLEGE","ST PAULS","ST. MICHAEL'S HOUSE","ST. SENAN'S NATIONAL SCHOOL  FOYNES","SWEET CICELY","SYLO.IE","TEMPLEOGUE COLLEGE","TERESIAN SCHOOL JUNIOR SCHOOL","TFI LOCAL LINK LAOIS OFFALY","THE ISLAND GOLF CLUB","THE TERESIAN SCHOOL (SENIOR)","THE VILLAGE HOTEL","TICKLES CHILDCARE","TOLKA RIVER PROJECT","URBANVOLT","VOLTALIA","WALKAIR DALDROP","WALSH BUSINESS CONSULTING","WATERLAND","WESTSTART","WILLOWDAS (MEATH WOMENS REFUGE)","WINDOW FASHIONS","WINDSOR","WOODTOWN FENCING LTD","YOPLAIT IRELAND LTD."];
 const players=[...document.querySelectorAll(".player")];
+const introView=document.querySelector("#intro-view");
 const startView=document.querySelector("#start-view");
+document.querySelector("#begin-button").addEventListener("click",()=>{
+ introView.classList.add("hidden");
+ startView.classList.remove("hidden");
+});
 const gameView=document.querySelector("#game-view");
 const endView=document.querySelector("#end-view");
 const chooseButton=document.querySelector("#choose-button");
@@ -211,6 +222,7 @@ function startGame(){
  document.querySelector("#outcome").classList.remove("wrong");
  document.querySelector("#outcome").classList.add("idle");
  tonerButtons.forEach(button=>button.disabled=false);
+ shuffleTonerOptions();
  nextOrder();
  startView.classList.add("hidden");endView.classList.add("hidden");gameView.classList.remove("hidden");
  updateWallClock();
